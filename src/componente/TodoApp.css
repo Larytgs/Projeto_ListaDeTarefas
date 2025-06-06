@@ -1,0 +1,142 @@
+body {
+  background-image: linear-gradient(to top, #206094, #4ba2d3, #206094);
+  justify-content: center;
+}
+
+.app-container {
+  width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 4px;
+  background-color: rgba(85, 83, 83, 0.705);
+}
+
+.title {
+  color: #4ba2d3;
+  text-align: center;
+  font-size: 2em;
+}
+
+.form-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
+  background-color: rgb(48, 47, 47);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.input-field::placeholder {
+  color: rgba(255, 255, 255, 0.671);
+}
+
+.add-button {
+  background-color: #0367da;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+
+  transition: transform 0.5s;
+}
+.add-button:hover {
+  transform: scale(1.1);
+}
+
+/* O quadro de baixo */
+.todo-list {
+  list-style: none;
+  padding: 0;
+}
+
+.todo-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  color: black;
+  border-radius: 4px;
+}
+
+.edit-container {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.add-button,
+.save-button,
+.cancel-button,
+.edit-button,
+.delete {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.add-button,
+.save-button {
+  background-color: #4caf4f;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #ff4444;
+  color: white;
+}
+
+.add-button:hover,
+.save-button:hover {
+  background-color: #45a049;
+}
+
+.cancel-button:hover,
+.delete:hover {
+  background-color: #ff4444;
+}
+
+.edit-button:hover {
+  background-color: #1976d2;
+}
+
+/* Quando adicionar uma tarefa */
+.task-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.edit-button {
+  background-color: #2195f3ea;
+  color: white;
+}
+
+.todo-text {
+  flex: 1;
+  cursor: pointer;
+  /* margin: 0px 10px; */
+}
+/* Para riscar o item */
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.delete {
+  background-color: #ff4444;
+  color: white;
+}
+
+.empty {
+  text-align: center;
+  color: #666;
+}
