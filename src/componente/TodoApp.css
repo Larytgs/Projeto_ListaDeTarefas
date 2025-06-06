@@ -50,6 +50,12 @@ body {
   transform: scale(1.1);
 }
 
+/* "Não há tarefas." */
+.empty {
+  text-align: center;
+  color: black;
+}
+
 /* O quadro de baixo */
 .todo-list {
   list-style: none;
@@ -134,9 +140,4 @@ body {
 .delete {
   background-color: #ff4444;
   color: white;
-}
-
-.empty {
-  text-align: center;
-  color: #666;
 }
