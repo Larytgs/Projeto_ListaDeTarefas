@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../componente/TodoApp.css";
+import "./TodoApp.css";
 
 const TodoApp = () => {
   //Lista de tarefas
