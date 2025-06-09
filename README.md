@@ -2,7 +2,7 @@
 
 - To-Do List com React
 
-<img src="/vite-project/public/"></img>
+<img src="/vite-project/public/img/Lista de tarefas.png"></img>
 
 Recentemente finalizei um projeto simples, mas funcional, de um gerenciador de lista de tarefas utilizando React. O objetivo foi criar uma aplicação prática para adicionar, editar, excluir e marcar tarefas como concluídas, tudo isso com uma interface limpa e interativa.
 Funcionalidades implementadas:
