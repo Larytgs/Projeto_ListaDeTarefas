@@ -1,6 +1,7 @@
 body {
   background-image: linear-gradient(to top, #206094, #4ba2d3, #206094);
   justify-content: center;
+  overflow-y: hidden;
 }
 
 .app-container {
@@ -143,9 +144,3 @@ body {
   background-color: #ff4444;
   color: white;
 }
-
-/* @media (max-width: 400px) {
-  .app-container {
-    min-width: 600px;
-  }
-} */
