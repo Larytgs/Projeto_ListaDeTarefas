@@ -168,9 +168,9 @@ body {
     font-size: 0.9em;
   }
 
-  .todo-item {
+  /* .todo-item {
     padding: 5px;
-  }
+  } */
 
   .edit-container {
     gap: 2px;
@@ -185,9 +185,9 @@ body {
     width: 100px;
   }
 
-  .save-button,
+  /* .save-button,
   .cancel-button {
     padding: 5px;
     font-size: 0.7em;
-  }
+  } */
 }
