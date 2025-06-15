@@ -6,7 +6,7 @@ body {
 
 .app-container {
   /* width: 600px; */
-  min-width: 300px;
+  min-width: 200px;
   max-width: 1150px;
   margin: 0 10px;
   text-align: center;
