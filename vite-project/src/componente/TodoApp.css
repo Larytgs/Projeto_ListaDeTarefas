@@ -152,7 +152,7 @@ body {
 
 @media (max-width: 500px) {
   .app-container {
-    width: 200px;
+    width: 300px;
   }
 
   .title {
@@ -176,10 +176,10 @@ body {
     gap: 2px;
   }
 
-  .todo-list {
+  /* .todo-list {
     min-width: 210px;
     max-width: 220px;
-  }
+  } */
 
   input {
     width: 100px;
