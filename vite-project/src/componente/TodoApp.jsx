@@ -12,6 +12,27 @@ const TodoApp = () => {
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
 
+  // Add pelo GPT:
+  const API_BASE_URL = "http://localhost:5000/api/todos"; // URL da sua API
+
+  // Carregar tarefas ao montar o componente
+  useEffect(() => {
+    fetchTodos();
+  }, []); // O array vazio garante que roda apenas uma vez
+
+  const fetchTodos = async () => {
+    try {
+      const response = await fetch(API_BASE_URL);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setTodos(data);
+    } catch (error) {
+      console.error("Erro ao buscar tarefas:", error);
+    }
+  };
+
   //Adicionar tarefas
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,17 +59,32 @@ const TodoApp = () => {
     setEditText(text);
   };
 
-  // Salvar edição
-  const saveEdit = (id) => {
+  // Salvar edição  (Mudado pelo ChatGPT)
+  const saveEdit = async (id) => {
     if (editText.trim() !== "") {
-      setTodos((prevTodos) =>
-        prevTodos.map((todo) =>
-          todo.id === id ? { ...todo, text: editText } : todo
-        )
-      );
+      try {
+        const response = await fetch(`${API_BASE_URL}/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: editText }),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const updatedTodo = await response.json();
+        setTodos((prevTodos) =>
+          prevTodos.map((todo) =>
+            todo._id === id ? { ...todo, text: updatedTodo.text } : todo
+          )
+        );
+        setEditingId(null);
+        setEditText("");
+      } catch (error) {
+        console.error("Erro ao salvar edição:", error);
+      }
     }
-    setEditingId(null);
-    setEditText("");
   };
 
   // Cancelar edição
@@ -57,20 +93,58 @@ const TodoApp = () => {
     setEditText("");
   };
 
-  //Excluir tarefa
-  const deleteTask = (id) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-  }; //filter(): Cria uma nova lista contendo apenas os itens cujo id não corresponde ao que foi clicado.
+  //Excluir tarefa (Mudado pelo ChatGPT)
+  const deleteTask = async (id) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== id));
+    } catch (error) {
+      console.error("Erro ao excluir tarefa:", error);
+    }
+  };
+  // const deleteTask = (id) => {
+  //   setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  // }; //filter(): Cria uma nova lista contendo apenas os itens cujo id não corresponde ao que foi clicado.
   //setTodos(): Atualiza o estado removendo a tarefa selecionada.
 
-  // Alternar estado de conclusão
-  const toggleComplete = (id) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+  // Alternar estado de conclusão (Mudado pelo ChatGPT)
+  const toggleComplete = async (id) => {
+    const todoToUpdate = todos.find((todo) => todo._id === id);
+    if (!todoToUpdate) return;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ completed: !todoToUpdate.completed }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const updatedTodo = await response.json();
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo._id === id ? { ...todo, completed: updatedTodo.completed } : todo
+        )
+      );
+    } catch (error) {
+      console.error("Erro ao alternar conclusão:", error);
+    }
   };
+  // const toggleComplete = (id) => {
+  //   setTodos((prevTodos) =>
+  //     prevTodos.map((todo) =>
+  //       todo.id === id ? { ...todo, completed: !todo.completed } : todo
+  //     )
+  //   );
+  // };
 
   return (
     <div className="app-container">
