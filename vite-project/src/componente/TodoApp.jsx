@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./TodoApp.css";
 
 const TodoApp = () => {
@@ -13,7 +13,7 @@ const TodoApp = () => {
   const [editText, setEditText] = useState("");
 
   // Add pelo GPT:
-  const API_BASE_URL = "http://localhost:5000/api/todos"; // URL da sua API
+  const API_BASE_URL = "http://localhost:5001/api/todos"; // URL da sua API
 
   // Carregar tarefas ao montar o componente
   useEffect(() => {
@@ -34,36 +34,40 @@ const TodoApp = () => {
   };
 
   //Adicionar tarefas
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (inputValue.trim() !== "") {
-      //se tem algo digitado ali
-      const newTodo = {
-        //ele vai criar a lista
-        id: Date.now(),
-        text: inputValue,
-        completed: false, // Novo campo para rastrear conclusão
-      };
-
-      setTodos((prevTodos) => [...prevTodos, newTodo]); //pegar o array de todos e colocar la dentro do newTodo
-      // Os 3 pontinhos é 'todos eles'
-
-      setInputValue(""); //Depois eu zero o input, para add outro
+      try {
+        const response = await fetch(API_BASE_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: inputValue, completed: false }),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const newTodo = await response.json();
+        setTodos((prevTodos) => [...prevTodos, newTodo]);
+        setInputValue("");
+      } catch (error) {
+        console.error("Erro ao adicionar tarefa:", error);
+      }
     }
   };
 
   /// Iniciar edição
-  const startEditing = (id, text) => {
-    setEditingId(id);
+  const startEditing = (_id, text) => {
+    setEditingId(_id);
     setEditText(text);
   };
 
   // Salvar edição  (Mudado pelo ChatGPT)
-  const saveEdit = async (id) => {
+  const saveEdit = async (_id) => {
     if (editText.trim() !== "") {
       try {
-        const response = await fetch(`${API_BASE_URL}/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/${_id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -76,7 +80,7 @@ const TodoApp = () => {
         const updatedTodo = await response.json();
         setTodos((prevTodos) =>
           prevTodos.map((todo) =>
-            todo._id === id ? { ...todo, text: updatedTodo.text } : todo
+            todo._id === _id ? { ...todo, text: updatedTodo.text } : todo
           )
         );
         setEditingId(null);
@@ -94,15 +98,15 @@ const TodoApp = () => {
   };
 
   //Excluir tarefa (Mudado pelo ChatGPT)
-  const deleteTask = async (id) => {
+  const deleteTask = async (_id) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/${_id}`, {
         method: "DELETE",
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== id));
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== _id));
     } catch (error) {
       console.error("Erro ao excluir tarefa:", error);
     }
@@ -113,12 +117,12 @@ const TodoApp = () => {
   //setTodos(): Atualiza o estado removendo a tarefa selecionada.
 
   // Alternar estado de conclusão (Mudado pelo ChatGPT)
-  const toggleComplete = async (id) => {
-    const todoToUpdate = todos.find((todo) => todo._id === id);
+  const toggleComplete = async (_id) => {
+    const todoToUpdate = todos.find((todo) => todo._id === _id);
     if (!todoToUpdate) return;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/${_id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -131,7 +135,9 @@ const TodoApp = () => {
       const updatedTodo = await response.json();
       setTodos((prevTodos) =>
         prevTodos.map((todo) =>
-          todo._id === id ? { ...todo, completed: updatedTodo.completed } : todo
+          todo._id === _id
+            ? { ...todo, completed: updatedTodo.completed }
+            : todo
         )
       );
     } catch (error) {
@@ -173,10 +179,10 @@ const TodoApp = () => {
           //pegar cada map
           return (
             <li
-              key={todo.id}
+              key={todo._id}
               className={`todo-item ${todo.completed ? "completed" : ""}`}
             >
-              {editingId === todo.id ? (
+              {editingId === todo._id ? (
                 <div className="edit-container">
                   <input
                     type="text"
@@ -185,7 +191,7 @@ const TodoApp = () => {
                     className="edit-input"
                   />
                   <button
-                    onClick={() => saveEdit(todo.id)}
+                    onClick={() => saveEdit(todo._id)}
                     className="save-button"
                   >
                     Salvar
@@ -198,21 +204,21 @@ const TodoApp = () => {
                 <>
                   <div className="task-content">
                     <button
-                      onClick={() => startEditing(todo.id, todo.text)}
+                      onClick={() => startEditing(todo._id, todo.text)}
                       className="edit-button"
                     >
                       ✏️
                     </button>
 
                     <span
-                      onClick={() => toggleComplete(todo.id)}
+                      onClick={() => toggleComplete(todo._id)}
                       className="todo-text"
                     >
                       {todo.text}
                     </span>
 
                     <button
-                      onClick={() => deleteTask(todo.id)}
+                      onClick={() => deleteTask(todo._id)}
                       className="delete"
                     >
                       ❌
