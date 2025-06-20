@@ -1,5 +1,5 @@
 require("dotenv").config(); // Carrega as variáveis de ambiente do .env
-console.log(process.env.MONGODB_URI);
+console.log("MONGODB_URI:", process.env.MONGODB_URI);
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors"); // Importa o pacote cors
