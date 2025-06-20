@@ -99,10 +99,10 @@ const TodoApp = () => {
           //pegar cada map
           return (
             <li
-              key={todo._id}
+              key={todo.id}
               className={`todo-item ${todo.completed ? "completed" : ""}`}
             >
-              {editingId === todo._id ? (
+              {editingId === todo.id ? (
                 <div className="edit-container">
                   <input
                     type="text"
@@ -111,7 +111,7 @@ const TodoApp = () => {
                     className="edit-input"
                   />
                   <button
-                    onClick={() => saveEdit(todo._id)}
+                    onClick={() => saveEdit(todo.id)}
                     className="save-button"
                   >
                     Salvar
@@ -124,21 +124,21 @@ const TodoApp = () => {
                 <>
                   <div className="task-content">
                     <button
-                      onClick={() => startEditing(todo._id, todo.text)}
+                      onClick={() => startEditing(todo.id, todo.text)}
                       className="edit-button"
                     >
                       ✏️
                     </button>
 
                     <span
-                      onClick={() => toggleComplete(todo._id)}
+                      onClick={() => toggleComplete(todo.id)}
                       className="todo-text"
                     >
                       {todo.text}
                     </span>
 
                     <button
-                      onClick={() => deleteTask(todo._id)}
+                      onClick={() => deleteTask(todo.id)}
                       className="delete"
                     >
                       ❌
